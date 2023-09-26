@@ -12,7 +12,7 @@ import pandas as pd
 class Application(TkinterDnD.Tk):
     def __init__(self):
         super().__init__()
-        self.title("CSV Viewer")
+        self.title("XPT Viewer")
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand="true")
         self.geometry("900x500")
@@ -63,18 +63,18 @@ class SearchPage(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.file_names_listbox = tk.Listbox(parent, selectmode=tk.SINGLE, background="darkgray")
-        self.file_names_listbox.place(relheight=1, relwidth=0.25)
+        self.file_names_listbox.place(relheight=1, relwidth=0.10)
         self.file_names_listbox.drop_target_register(DND_FILES)
         self.file_names_listbox.dnd_bind("<<Drop>>", self.drop_inside_list_box)
         self.file_names_listbox.bind("<Double-1>", self._display_file)
 
         self.search_entrybox = tk.Entry(parent)
-        self.search_entrybox.place(relx=0.25, relwidth=0.75)
+        self.search_entrybox.place(relx=0.25, relwidth=0.90)
         self.search_entrybox.bind("<Return>", self.search_table)
 
         # Treeview
         self.data_table = DataTable(parent)
-        self.data_table.place(rely=0.05, relx=0.25, relwidth=0.75, relheight=0.95)
+        self.data_table.place(rely=0.05, relx=0.10, relwidth=0.90, relheight=0.95)
 
         self.path_map = {}
 
@@ -92,7 +92,7 @@ class SearchPage(tk.Frame):
     def _display_file(self, event):
         file_name = self.file_names_listbox.get(self.file_names_listbox.curselection())
         path = self.path_map[file_name]
-        df = pd.read_sas(path)
+        df = pd.read_sas(path, encoding='utf-8')
         self.data_table.set_datatable(dataframe=df)
 
     def _parse_drop_files(self, filename):
